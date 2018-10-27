@@ -6,10 +6,11 @@ Mannequin:Import("IO")
 Mannequin:Import("EIOContext")
 
 -- Create an IO context, so we can save the user notice.
-local io = IO(EIOContext.Global, Mannequin)
+local io = IO(EIOContext.Global)
 
 local deathPopupShown = false
 local canGameOver = false
+local causeOfDeath = ""
 
 -- The name of the last Survivor
 local dName = "";
@@ -27,13 +28,18 @@ Event.Once("Menu", function()
 end)
 
 -- When an Agent (something in the game) dies,
-Event.On("AgentDeath", function(victim)
+Event.On("AgentDeath", function(di)
 	-- Check to see that it's "living" (i.e. not a wall or other clutter)
-	if not victim.IsLiving then return true end
+	if not di.Victim.IsLiving then return true end
 	-- Check to see that it's the player's faction
-    if victim.Faction.ID != "player" then return true end
+    if di.Victim.Faction.ID != "player" then return true end
 	-- If neither are true, set the last Survivor's name to the name of the survivor that just died
-	dName = victim.Name;
+	dName = di.Victim.Name
+	
+	if di.IsCauseAttacked then causeOfDeath = "Died to " .. di.Description
+	elseif di.IsCauseExpedition then causeOfDeath = "Died on an expedition"
+	elseif di.IsCauseTrait then causeOfDeath = "Died of " .. di.Description
+	else causeOfDeath = "Died to " .. di.Description end
 end)
 
 -- When the game ends,
@@ -54,6 +60,7 @@ Event.On("GameOver", function()
             local rqargs = {}
             rqargs.firstname = dName
             rqargs.lastwords = resp
+			rqargs.cause = causeOfDeath
 			
 			-- Show a blocking dialog that lets the user know we're submitting their tombstone
 			local pnl = UI.ShowDialog("Submitting", "Please wait while your tombstone is submitted. This may take a moment...")
