@@ -39,7 +39,7 @@ Event.On("AgentDeath", function(di)
 	if di.IsCauseAttacked then causeOfDeath = "Died to " .. di.Description
 	elseif di.IsCauseExpedition then causeOfDeath = "Died on an expedition"
 	elseif di.IsCauseTrait then causeOfDeath = "Died of " .. di.Description
-	else causeOfDeath = "Died to " .. di.Description end
+	else causeOfDeath = "Died of mysterious causes" end
 end)
 
 -- When the game ends,
