@@ -1,7 +1,7 @@
 {
 	"name": "Tombstones Mod",
 	"author": "Alexandra @ Anarkis Gaming",
-	"version": 1.1,
+	"version": 1.2,
 	"entryPoint": "init.lua",
 	"description": "When your settlement collapses, a tombstone will be posted to the After the Collapse Discord chat."
 }

@@ -58,9 +58,9 @@ Event.On("GameOver", function()
 			-- Once the user has responded,
 			-- Set the request arguments
             local rqargs = {}
-            rqargs.firstname = dName
-            rqargs.lastwords = resp
-			rqargs.cause = causeOfDeath
+            rqargs.SurvivorName = dName
+            rqargs.LastWords = resp
+			rqargs.Cause = causeOfDeath
 			
 			-- Show a blocking dialog that lets the user know we're submitting their tombstone
 			local pnl = UI.ShowDialog("Submitting", "Please wait while your tombstone is submitted. This may take a moment...")
@@ -69,9 +69,7 @@ Event.On("GameOver", function()
 			-- We use this here so that the user's persona name can be accurately shown on the tombstone.
 			-- If you have a reason to send signed requests, please let us know.
 			-- HTTP.Post is a drop-in for this
-			
-			-- Note: Steamworks.SignedRequest is currently a thread-blocking operation, but we're looking into fixing this in the future.
-            Steamworks.SignedRequest("5f07e1d5e9f569197f60d07b8588285ccb02071f231195a34e805d7558e334f214511a81b97933b40bc8707f6e921613d22162d0802135cfa676896db6180486", rqargs, function(resp)
+            Steamworks.SignedRequest("Tombstones", rqargs, function(resp)
 				-- Close the panel
 				pnl:Close()
                 canGameOver = true
